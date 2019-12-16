@@ -1,0 +1,43 @@
+global class FieldExplorerController
+{ 
+    @Auraenabled(cacheable=true)
+    public static List<string> getObjects() {
+        List<string> sObjectList = new List<string>();
+        
+        for (Schema.SObjectType objTyp: Schema.getGlobalDescribe().Values()) {
+            String name = objTyp.getDescribe().getName();
+            if((!name.containsignorecase('history') && !name.containsignorecase('tag')&&
+                !name.containsignorecase('share') && !name.containsignorecase('feed')) || 
+                name.toLowerCase().right(3) ==  '__c') { 
+                    System.debug('name ' + name);     
+                   sObjectList.add(name);
+            }
+        }
+        system.debug('size:'+sObjectList.size());
+        return sObjectList;
+    }
+   
+    @Auraenabled(cacheable=true)
+    public static List<FieldWrap> getFields(String objectName)
+    {
+        Map<String, Schema.SObjectType> mapType = Schema.getGlobalDescribe(); 
+        Schema.SObjectType ctype = mapType.get(objectName); 
+        Map<String, Schema.SobjectField> fieldMap = ctype.getDescribe().fields.getMap();  
+        List<FieldWrap> strList = new List<FieldWrap>();
+        for(String fieldName: fieldMap.keySet()) {
+            FieldWrap wrapMap = new FieldWrap();
+            wrapMap.name = fieldName;
+            wrapMap.label = fieldMap.get(fieldName).getDescribe().getLabel();        
+            strList.add(wrapMap); 
+        }
+        return strList;
+    }
+    
+    public class FieldWrap
+    {
+        @Auraenabled
+        public String Name {get;set;}
+        @Auraenabled
+        public String Label {get;set;}
+    }
+}
