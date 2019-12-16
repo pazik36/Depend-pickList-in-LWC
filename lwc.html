@@ -1,0 +1,24 @@
+<template>
+        <lightning-layout multiple-rows>
+                    <lightning-layout-item size="5" padding="around-small">
+                           <lightning-combobox name="Salesforce object" 
+                            label="Salesforce object"
+                            value="" 
+                            placeholder="Select Object" 
+                            options={objects} 
+                            onchange={handleObjectChange}
+                            required></lightning-combobox>
+                    </lightning-layout-item>
+                    <lightning-layout-item size="5" padding="around-small">
+                            <lightning-combobox
+                            name="Fields"
+                            label="Fields"
+                            value=""
+                            placeholder="Select Field"
+                            options={fields}
+                            onchange={handleFieldChange}
+                            required
+                    ></lightning-combobox>
+                    </lightning-layout-item>
+        </lightning-layout>
+</template>
